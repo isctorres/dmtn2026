@@ -33,7 +33,7 @@ class DashboardScreen extends StatelessWidget {
               leading: Icon(Icons.light_mode),
               trailing: Icon(Icons.chevron_right),
               onTap: (){
-                GlobalValues.banTheme.value = !GlobalValues.banTheme.value;
+                //GlobalValues.banTheme.value = !GlobalValues.banTheme.value;
               },
             ),
              ListTile(

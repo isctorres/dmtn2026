@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
 class GlobalValues {
-  static ValueNotifier<bool> banTheme = ValueNotifier(false);
+  // 0 -> Noche
+  // 1 -> Dia
+  // 2 -> Cálido
+  static ValueNotifier<int> banTheme = ValueNotifier(0);
 }
