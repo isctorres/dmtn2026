@@ -1,4 +1,5 @@
 import 'package:dmsn/components/global_values.dart';
+import 'package:dmsn/components/theme_app.dart';
 import 'package:dmsn/screens/dashboard_screen.dart';
 import 'package:dmsn/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +14,19 @@ class MyApp extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: GlobalValues.banTheme,
       builder: (context,value,_) {
+
+        ThemeData tema = ThemeData.light();
+        switch(value){
+          case 0: tema = ThemeData.dark(); break;
+          case 1: tema = ThemeData.light(); break;
+          case 2: tema = ThemeApp.warmTheme();
+        }
+
         return MaterialApp(
           routes: {
             "/dash" : (context) => DashboardScreen()
           },
-          theme: value ? ThemeData.light() : ThemeData.dark(),
+          theme: tema,
           home: LoginScreen(),
         );
       }

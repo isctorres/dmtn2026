@@ -1,4 +1,5 @@
 import 'package:dmsn/components/global_values.dart';
+import 'package:dmsn/components/menu_circular.dart';
 import 'package:flutter/material.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -51,6 +52,7 @@ class DashboardScreen extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: MenuCircular(),
     );
   }
 }
