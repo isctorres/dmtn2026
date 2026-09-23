@@ -1,18 +1,53 @@
+import 'dart:async';
 import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 class NotesDB {
   
-  final nameDB = "NOTESDB";
-  final versionDB = 1;
-  Database? _database;
-  static Database? get database {
+  static final nameDB = "NOTESDB";
+  static final versionDB = 1;
+  static Database? _database;
+  Future<Database?> get database async {
     if( _database != null ) return _database;
-    return _database = _initDatabase();
+    return _database = await _initDatabase();
   }
 
-  Database _initDatabase(){
-    Directory  folder 
+  Future<Database> _initDatabase() async {
+    Directory  folder = await getApplicationDocumentsDirectory();
+    String pathDB = join(folder.path,nameDB);
+    return openDatabase(
+      pathDB,
+      version: versionDB,
+      onCreate: createTables
+    );
   }
+
+  FutureOr<void> createTables(Database db, int version) {
+    String query = ''' 
+      CREATE TABLE tblNotes(
+        idNote INTEGER PRIMARY KEY,
+        title VARCHAR(35),
+        content TEXT,
+        dateNote CHAR(10)
+      )
+    ''';
+    db.execute(query);
+  }
+
+  Future<int> INSERT(Map<String,dynamic> note) async {
+    var conexion = await database;
+    return conexion!.insert("tblNotes", note);
+  }
+  Future<int> UPDATE(Map<String,dynamic> note) async {
+    var conexion = await database;
+    return conexion!.update("tblNotes", note, where: "idNote = ?", whereArgs: [note['idNote']]);
+  }
+  Future<int> DELETE(int idNote) async {
+     var conexion = await database;
+    return conexion!.delete("tblNotes",where: "idNote = ?", whereArgs: [idNote]);
+  }
+  Future<void> SELECT(){}
 
 }
