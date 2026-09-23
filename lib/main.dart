@@ -1,7 +1,9 @@
 import 'package:dmsn/components/global_values.dart';
 import 'package:dmsn/components/theme_app.dart';
+import 'package:dmsn/screens/add_note_screen.dart';
 import 'package:dmsn/screens/dashboard_screen.dart';
 import 'package:dmsn/screens/login_screen.dart';
+import 'package:dmsn/screens/notes_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp( MyApp());
@@ -24,7 +26,9 @@ class MyApp extends StatelessWidget {
 
         return MaterialApp(
           routes: {
-            "/dash" : (context) => DashboardScreen()
+            "/dash" : (context) => DashboardScreen(),
+            "/note" : (context) => NotesScreen(),
+            "/add"  : (context) => AddNoteScreen()
           },
           theme: tema,
           home: LoginScreen(),

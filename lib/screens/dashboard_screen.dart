@@ -29,12 +29,12 @@ class DashboardScreen extends StatelessWidget {
               trailing: Icon(Icons.chevron_right),
             ),
             ListTile(
-              title: Text('Cambiar tema'),
-              subtitle: Text('Tema día / noche'),
-              leading: Icon(Icons.light_mode),
+              title: Text('Lista de Notas'),
+              subtitle: Text('App Notes'),
+              leading: Icon(Icons.note),
               trailing: Icon(Icons.chevron_right),
               onTap: (){
-                //GlobalValues.banTheme.value = !GlobalValues.banTheme.value;
+                Navigator.pushNamed(context, "/note");
               },
             ),
              ListTile(

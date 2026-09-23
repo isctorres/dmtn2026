@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:dmsn/database/notes_dao.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -45,9 +46,12 @@ class NotesDB {
     return conexion!.update("tblNotes", note, where: "idNote = ?", whereArgs: [note['idNote']]);
   }
   Future<int> DELETE(int idNote) async {
-     var conexion = await database;
+    var conexion = await database;
     return conexion!.delete("tblNotes",where: "idNote = ?", whereArgs: [idNote]);
   }
-  Future<void> SELECT(){}
-
+  Future<List<NotesDAO>> SELECT() async {
+    var conexion = await database;
+    final res = await conexion!.query("tblNotes");
+    return res.map((note) => NotesDAO.fromMap(note)).toList();
+  }
 }
