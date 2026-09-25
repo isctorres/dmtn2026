@@ -1,3 +1,4 @@
+import 'package:dmsn/database/notes_db.dart';
 import 'package:flutter/material.dart';
 
 class AddNoteScreen extends StatefulWidget {
@@ -8,14 +9,46 @@ class AddNoteScreen extends StatefulWidget {
 }
 
 class _AddNoteScreenState extends State<AddNoteScreen> {
+  
+  NotesDB? notesDB;
+  @override
+  void initState() {
+    super.initState();
+    notesDB = NotesDB();
+  }
+  
   @override
   Widget build(BuildContext context) {
 
-    final txtTitle = TextFormField();
-    final txtContent = TextFormField();
+    final conTitle = TextEditingController();
+    final conContent = TextEditingController();
+
+    final txtTitle = TextFormField(
+      controller: conTitle,
+    );
+    final txtContent = TextFormField(
+      maxLines: 8,
+      controller: conContent,
+    );
     final space = SizedBox(height: 5,);
     final btnSave = ElevatedButton(
-      onPressed: (){}, 
+      onPressed: (){
+        notesDB!.INSERT({
+          "title" : conTitle.text,
+          "content": conContent.text,
+          "dateNote": "2026-09-25"
+        }).then((value) {
+          if(value>0){
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Se guardo el registro correctamente'),
+                duration: Duration(seconds: 3),
+              ),
+            );
+            Navigator.pop(context);
+          }
+        },);
+      }, 
       child: Text('Save Note')
     );
 
@@ -25,7 +58,9 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
         children: [
           txtTitle,
           space,
-          txtContent
+          txtContent,
+          space,
+          btnSave
         ],
       ),
     );
