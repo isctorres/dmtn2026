@@ -1,3 +1,4 @@
+import 'package:dmsn/database/notes_dao.dart';
 import 'package:dmsn/database/notes_db.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,14 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
 
     final conTitle = TextEditingController();
     final conContent = TextEditingController();
+    NotesDAO? note;
 
+    if( ModalRoute.of(context)!.settings.arguments != null ){
+      note = ModalRoute.of(context)!.settings.arguments as NotesDAO;
+      conTitle.text = note.title!;
+      conContent.text = note.content!;
+    }
+  
     final txtTitle = TextFormField(
       controller: conTitle,
     );
@@ -33,21 +41,39 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
     final space = SizedBox(height: 5,);
     final btnSave = ElevatedButton(
       onPressed: (){
-        notesDB!.INSERT({
-          "title" : conTitle.text,
-          "content": conContent.text,
-          "dateNote": "2026-09-25"
-        }).then((value) {
-          if(value>0){
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Se guardo el registro correctamente'),
-                duration: Duration(seconds: 3),
-              ),
-            );
-            Navigator.pop(context);
-          }
-        },);
+        if( note == null ){
+          notesDB!.INSERT({
+            "title" : conTitle.text,
+            "content": conContent.text,
+            "dateNote": "2026-09-25"
+          }).then((value) {
+            if(value>0){
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Se guardo el registro correctamente'),
+                  duration: Duration(seconds: 3),
+                ),
+              );
+              Navigator.pop(context);
+            }
+          },);
+        }else{
+          notesDB!.UPDATE({
+            "idNote" : note.idNote,
+            "title" : conTitle.text,
+            "content" : conContent.text
+          }).then((value) {
+            if(value>0){
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Se guardo el registro correctamente'),
+                  duration: Duration(seconds: 3),
+                ),
+              );
+              Navigator.pop(context);
+            }
+          },);
+        }
       }, 
       child: Text('Save Note')
     );
